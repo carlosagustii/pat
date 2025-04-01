@@ -10,7 +10,6 @@
 | **PUT**     | `/api/marcas/{id}`      | `ModeloMarca`                  | Actualiza una marca existente con el ID indicado.          | `200 OK`, `404 Not Found`         |
 | **DELETE**  | `/api/marcas/{id}`      | -                              | Elimina una marca con el ID indicado.                      | `204 No Content`, `404 Not Found` |
 
----
 
 ## Ejemplo:
 {
