@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pruebas API - Portal Relojes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container my-4">
+    <h1>Pruebas de la API REST de Marcas</h1>
+
+    <div class="mb-3">
+      <button class="btn btn-primary" onclick="crearMarca()">Crear Marca (POST)</button>
+      <button class="btn btn-info" onclick="obtenerMarca()">Obtener Marca (GET)</button>
+      <button class="btn btn-warning" onclick="actualizarMarca()">Actualizar Marca (PUT)</button>
+      <button class="btn btn-danger" onclick="borrarMarca()">Borrar Marca (DELETE)</button>
+    </div>
+
+    <!-- Área para mostrar resultados -->
+    <pre id="resultado"></pre>
+  </div>
+
+  <script>
+    const apiUrl = "http://localhost:8080/api/marcas";
+    const marcaId = "Apple";
+
+    function mostrarResultado(data) {
+      document.getElementById("resultado").textContent = JSON.stringify(data, null, 2);
+    }
+
+    function crearMarca() {
+      const nuevaMarca = {
+        id: marcaId,
+        tipo: "Inteligente",
+        precioAprox: 400.0,
+        descripcion: "Un smartwatch de alta gama"
+      };
+
+      fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevaMarca)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Marca creada:", data);
+        mostrarResultado(data);
+      })
+      .catch(error => console.error("Error en POST:", error));
+    }
+
+    function obtenerMarca() {
+      fetch(`${apiUrl}/${marcaId}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log("Marca obtenida:", data);
+        mostrarResultado(data);
+      })
+      .catch(error => console.error("Error en GET:", error));
+    }
+
+    function actualizarMarca() {
+      const marcaActualizada = {
+        id: marcaId,
+        tipo: "Inteligente Actualizado",
+        precioAprox: 420.0,
+        descripcion: "Smartwatch con nuevas funciones"
+      };
+
+      fetch(`${apiUrl}/${marcaId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(marcaActualizada)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Marca actualizada:", data);
+        mostrarResultado(data);
+      })
+      .catch(error => console.error("Error en PUT:", error));
+    }
+
+    function borrarMarca() {
+      fetch(`${apiUrl}/${marcaId}`, {
+        method: "DELETE"
+      })
+      .then(() => {
+        console.log("Marca borrada");
+        mostrarResultado({ mensaje: "Marca borrada" });
+      })
+      .catch(error => console.error("Error en DELETE:", error));
+    }
+  </script>
+</body>
+</html>
